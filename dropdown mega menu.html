@@ -1,0 +1,99 @@
+<style>
+    /* Show the hidden menu in the builder. */
+    body.ng-scope .megamenu__wrapper--hidden {
+        opacity: 1;
+        pointer-events: initial;
+        transform: translateY(0px);
+    }
+    
+    body:not(.ng-scope) .megamenu__wrapper--hidden {
+        padding-top: 0px;
+        height: 0px;
+        overflow: hidden;
+    }
+    .top-bar-wrapper {
+        z-index: 100 !important;
+        max-height: 40px !important;
+    }
+    .megamenu__wrapper--hidden {
+        pointer-events: none;
+        overflow: hidden;
+        visibility: hidden;
+    }
+    .megamenu__wrapper {
+        padding-top: 8px;
+        position: relative;
+    }
+    .icon-menu-list:hover {
+        rotate: 90deg;
+        transition-duration: 300ms;
+    }
+    .user-menu , .icon-menu-list {
+        cursor: pointer;
+    }
+    .wrapper-menu-content {
+        width: 150px;
+    }
+</style>
+<script>
+        jQuery(document).ready( function() {
+      
+        var activeMegaMenu = '';
+        
+        if(window.angular) { 
+          return; 
+        }
+        
+        jQuery('.megamenu__wrapper').css({
+          'position': 'absolute',
+          'left': 0,
+          'right': 0
+        });
+      
+        jQuery('[megamenu-link-id]').on('mouseover focusin', function() {
+          
+          if( !jQuery(this).hasClass('megamenu__wrapper') ) {
+            
+          activeMegaMenu = jQuery(this).attr('megamenu-link-id');
+            
+          var bottom = jQuery(this).offset().top + jQuery(this).outerHeight(true);
+            
+             var targetContainer = jQuery(".megamenu__wrapper[megamenu-link-id='" + activeMegaMenu + "']");
+          targetContainer.css('top', bottom);
+          targetContainer.removeClass('megamenu__wrapper--hidden');
+          
+            }
+          
+        });
+        
+        jQuery('[megamenu-link-id]').mouseleave( function(e) {
+          
+          if( e.relatedTarget.closest('[megamenu-link-id]') != null && e.relatedTarget.closest('[megamenu-link-id]').getAttribute('megamenu-link-id') != activeMegaMenu ) {
+          
+            var targetContainer = jQuery(".megamenu__wrapper[megamenu-link-id='" + activeMegaMenu + "']");
+          
+          targetContainer.addClass('megamenu__wrapper--hidden');
+            
+          } else if( e.relatedTarget.closest('[megamenu-link-id]') == null ) {
+            var targetContainer = jQuery(".megamenu__wrapper[megamenu-link-id='" + activeMegaMenu + "']");
+          
+            targetContainer.addClass('megamenu__wrapper--hidden');
+          }
+          
+        });
+        
+        jQuery('.megamenu__wrapper').focusin( function() {
+          
+          jQuery(this).removeClass('megamenu__wrapper--hidden');
+          
+        })
+        
+        jQuery('.megamenu__wrapper').focusout( function() {
+          
+          jQuery(this).addClass('megamenu__wrapper--hidden');
+          
+        })
+        
+      });
+      
+</script>
